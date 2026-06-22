@@ -33,12 +33,19 @@
             <h3>Filter Products</h3>
             <div class="filter-group">
                 <select>
-                    <option>All Categories</option>
-                    <option>Electronics</option>
-                    <option>Fashion</option>
-                    <option>Home & Garden</option>
-                    <option>Sports</option>
-                    <option>Books</option>
+                    {% if categories %}
+                    <option>Все категории</option>
+                    {% for category in categories %}
+                    <option title="{{ category.description }}">{{ category.name }}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+                <select>
+                    <option>Sort by: Featured</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest</option>
+                    <option>Best Selling</option>
                 </select>
                 <select>
                     <option>Sort by: Featured</option>
@@ -58,22 +65,22 @@
         </div>
 
         <div class="products-grid">
-            {% if products %}
-                {% for product in products %}
+            {% if gifts %}
+                {% for gift in gifts %}
                 <div class="product-card">
                     <div class="product-image">
-                        {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% if gift.image %}
+                            <img src="{{ gift.image.url }}" alt="{{ gift.name }}">
                         {% else %}
                             📦
                         {% endif %}
                     </div>
                     <div class="product-info">
-                        <div class="product-title">{{ product.name }}</div>
-                        <div class="product-description">{{ product.description|truncatewords:15 }}</div>
+                        <div class="product-title">{{ gift.name }}</div>
+                        <div class="product-description">{{ gift.description|truncatewords:15 }}</div>
                         <div class="product-footer">
-                            <div class="product-price">${{ product.price }}</div>
-                            <button class="add-to-cart" data-product-id="{{ product.id }}">Add to Cart</button>
+                            <div class="product-price">${{ gift.price }}</div>
+                            <button class="add-to-cart" data-product-id="{{ gift.id }}">Add to Cart</button>
                         </div>
                     </div>
                 </div>
