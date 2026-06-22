@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import GiftModel, CategoryModel
 
-# Register your models here.
+admin.site.register(GiftModel)
+admin.site.register(CategoryModel)
