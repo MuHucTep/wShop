@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wShop - Product Catalog</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="/">wShop</a></div>
+            <div class="cart-icon">
+                <a href="/cart">🛒 Cart</a>
+                <span class="cart-count">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Welcome to wShop</h1>
+        <p>Discover amazing products at unbeatable prices</p>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for products...">
+            <button>Search</button>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="filters">
+            <h3>Filter & Sort Products</h3>
+            <form method="get" action="" id="filter-form">
+                <div class="filter-group">
+                    
+                    <select name="category" onchange="this.form.submit()">
+                        <option value="">Все категории</option>
+                        {% if categories %}
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %} title="{{ category.description }}">
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+
+                    <select name="sort" onchange="this.form.submit()">
+                        <option value="">Сортировка: По умолчанию</option>
+                        <option value="price_asc" {% if request.GET.sort == 'price_asc' %}selected{% endif %}>Цена: от меньшей к большей</option>
+                        <option value="price_desc" {% if request.GET.sort == 'price_desc' %}selected{% endif %}>Цена: от большей к меньшей</option>
+                        <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Новинки</option>
+                    </select>
+
+                    <select name="price_range" onchange="this.form.submit()">
+                        <option value="">Все цены</option>
+                        <option value="under_25" {% if request.GET.price_range == 'under_25' %}selected{% endif %}>До $25</option>
+                        <option value="25_50" {% if request.GET.price_range == '25_50' %}selected{% endif %}>$25 - $50</option>
+                        <option value="50_100" {% if request.GET.price_range == '50_100' %}selected{% endif %}>$50 - $100</option>
+                        <option value="over_100" {% if request.GET.price_range == 'over_100' %}selected{% endif %}>Свыше $100</option>
+                    </select>
+                    
+                </div>
+            </form>
+        </div>
+
+        <div class="products-grid">
+            {% if gifts %}
+                {% for gift in gifts %}
+                <div class="product-card">
+                    <div class="product-image">
+                        {% if gift.image %}
+                            <img src="{{ gift.image.url }}" alt="{{ gift.name }}">
+                        {% else %}
+                            📦
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">{{ gift.name }}</div>
+                        <div class="product-description">{{ gift.description|truncatewords:15 }}</div>
+                        <div class="product-footer">
+                            <div class="product-price">${{ gift.price }}</div>
+                            <button class="add-to-cart" data-product-id="{{ gift.id }}">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+            <a href="/shipping">Shipping Info</a>
+            <a href="/returns">Returns</a>
+        </div>
+        <p>&copy; 2026 wShop. All rights reserved.</p>
+        <p>Project by <a href="https://github.com/MuHucTep">MuHucTep</a></p>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
